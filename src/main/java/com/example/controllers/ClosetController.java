@@ -6,6 +6,8 @@ import com.example.services.ClosetContentsRepository;
 import com.example.services.UserRepository;
 import com.example.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +25,24 @@ public class ClosetController {
 
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model, Integer page) {
+        page = (page == null) ? 0 : page;
+        PageRequest pr = new PageRequest(page, 3);
+        Page<ClosetContents> p;
+
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
+
+        p = closetContents.findAll(pr);
+
         model.addAttribute("username", username);
-        model.addAttribute("closetContents", closetContents.findByUser(user)); // same as select * from
+        model.addAttribute("closetContents", closetContents.findByUser(user, pr)); // same as select * from
+
+        model.addAttribute("nextPage", page + 1);
+        model.addAttribute("previousPage", page - 1);
+        model.addAttribute("showNext", p.hasNext());
+        model.addAttribute("showPrevious", p.hasNext());
+
         return "home";
     }
 
