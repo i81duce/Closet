@@ -1,0 +1,13 @@
+<html>
+<body>
+{{#content}}
+<form action="/edit" method="post">
+    <input type="text" placeholder="Item" name="item" value="{{item}}"/>
+    <input type="text" placeholder="Color" name="color" value="{{color}}"/>
+    <input type="number" placeholder="Amount" name="amount" value="{{amount}}"/>
+    <input type="hidden" name="id" value="{{id}}"/>
+    <button type="submit">Edit</button>
+</form>
+{{/content}}
+</body>
+</html>

@@ -1,0 +1,40 @@
+<html>
+<body>
+
+{{^username}}
+<form action="/login" method="post"/>
+    <input type="text" placeholder="Username" name="username"/>
+    <input type="password" placeholder="Password" name="password"/>
+    <button type="submit">Login</button>
+</form>
+{{/username}}
+
+{{#username}}
+    Welcome {{username}}!
+<form action="/addContents" method="post">
+    <input type="text" placeholder="Item" name="item"/>
+    <input type="text" placeholder="Color" name="color"/>
+    <input type="number" placeholder="Amount" name="amount"/>
+    <button type="submit">Add</button>
+</form>
+
+<ol>
+    {{#closetContents}}
+    <li>{{item}} - {{color}} - {{amount}}</li>
+    <a href="/edit?id={{id}}">Edit</a>
+    <form action="/deleteContents" method="post">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <button type="submit">Delete</button>
+    </form>
+    {{/closetContents}}
+</ol>
+
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+{{/username}}
+
+
+
+</body>
+</html>
