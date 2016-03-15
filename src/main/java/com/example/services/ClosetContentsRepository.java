@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
+// modified to implement paging
 public interface ClosetContentsRepository extends PagingAndSortingRepository<ClosetContents, Integer> {
     Page<ClosetContents> findByUser(User user, Pageable pageable);
 }

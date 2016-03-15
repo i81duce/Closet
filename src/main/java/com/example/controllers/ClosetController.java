@@ -27,7 +27,7 @@ public class ClosetController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model, Integer page) {
         page = (page == null) ? 0 : page;
-        PageRequest pr = new PageRequest(page, 3);
+        PageRequest pr = new PageRequest(page, 2);
         Page<ClosetContents> p;
 
         String username = (String) session.getAttribute("username");
@@ -35,13 +35,14 @@ public class ClosetController {
 
         p = closetContents.findAll(pr);
 
-        model.addAttribute("username", username);
-        model.addAttribute("closetContents", closetContents.findByUser(user, pr)); // same as select * from
-
-        model.addAttribute("nextPage", page + 1);
-        model.addAttribute("previousPage", page - 1);
-        model.addAttribute("showNext", p.hasNext());
-        model.addAttribute("showPrevious", p.hasNext());
+        if (user != null) {
+            model.addAttribute("username", username);
+            model.addAttribute("closetContents", closetContents.findByUser(user, pr)); // same as select * from
+            model.addAttribute("showNext", p.hasNext());
+            model.addAttribute("nextPage", page + 1);
+            model.addAttribute("showPrevious", p.hasPrevious());
+            model.addAttribute("previousPage", page - 1);
+        }
 
         return "home";
     }
